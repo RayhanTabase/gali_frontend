@@ -9,6 +9,8 @@ import React from 'react';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
+import Login from './Pages/Login';
+import Register from './Pages/Register';
 
 // function ProtectedRoute() {
 //   const user = JSON.parse(localStorage.getItem('user'));
@@ -19,6 +21,7 @@ function App() {
   return (
     <div className="App">
       <ToastContainer position="top-center" theme="colored" />
+      <Register />
       {/* <Router>
         <Routes>
           <Route exact path="/" element={< />}>
