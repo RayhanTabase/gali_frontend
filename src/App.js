@@ -18,8 +18,8 @@ import './App.css';
 function App() {
   return (
     <div className="App">
+      <ToastContainer position="top-center" theme="colored" />
       {/* <Router>
-        <ToastContainer position="top-center" theme="colored" />
         <Routes>
           <Route exact path="/" element={< />}>
             <Route path="/" element={< />} />
