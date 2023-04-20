@@ -1,17 +1,34 @@
 import React from 'react';
 import { toast } from 'react-toastify';
 import Form from '../Components/Form';
+import {createUserUrl} from '../Utility/url';
 
 const Register = () => {
 
   //Handle submitting a Register form
-  const handleSubmit = (formInputs) => {
-    console.log(formInputs);
-    //check that expected varibale exist and are in valid structure 
-    // check that confirm password and password are identical
-    // submit to backend for validation
-    // handle response from backend
-    // use toast for notification and redirect user to login by inputting code sent to email
+  const handleSubmit = async (user) => {
+    console.log(JSON.stringify(user));
+    try {
+      const response = await fetch(createUserUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(user)
+      });
+      console.log(response);
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error);
+      }
+  
+      const responseData = await response.json();
+      return responseData;
+    } catch (error) {
+      console.error(error);
+      throw new Error('Failed to create user');
+    }
   };
 
   // The parameters to be used for the Register form
@@ -19,15 +36,17 @@ const Register = () => {
   const RegisterParams = {
     email: [true, 'email'],
     password: [true, ''],
-    confirm_password: [true, ''],
+    password_confirmation: [true, ''],
     first_name: [true, ''],
     last_name: [true, ''],
-    middle_name: [false, ''],
+    other_names: [false, ''],
+    profile_picture: [false, 'file']
   };
 
   return (
     <div className="Register-container">
       <Form title='Register' inputs={RegisterParams} actionSubmit={handleSubmit} />
+      <a href='#'>Login</a>
     </div>
   );
 };
