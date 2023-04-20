@@ -41,8 +41,7 @@ const Form = ({ inputs, actionSubmit, title }) => {
           </>
         ))}
       </div>
-      <button type="submit">Login</button>
-      <p>Sign Up</p>
+      <button type="submit">Submit</button>
     </form>
   );
 };

@@ -1,20 +1,33 @@
 import React from 'react';
 import { toast } from 'react-toastify';
 import Form from '../Components/Form';
+import {loginUser} from '../Utility/url';
 
 const Login = () => {
 
   //Handle submitting a login form
-  const handleSubmit = (formInputs) => {
-    console.log(formInputs);
-    //check that expected varibale exist and are in valid structure 
-    // check that confirm password and password are identical
-    // submit to backend for validation
-    // handle response from backend
-    // if user exists user is logged in
-    // if there is a return url , user is redirected there
-    // anything else show error and keep user on login page
-    // if user tries logging in multiple times (10) and fails to an existing email, block login access for 15 minutes and send email notification to user
+  const handleSubmit = async (credentials) => {
+    try {
+      const response = await fetch(loginUser, {
+        method: 'POST',
+        body: JSON.stringify(credentials)
+      });
+      console.log(response);
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error);
+      }
+  
+      const responseData = await response.json();
+      document.cookie = `session_token=${responseData.session_token}; path=/;`;
+      // const sessionToken = document.cookie.split('; ').find(row => row.startsWith('session_token=')).split('=')[1];
+      // console.log(sessionToken);
+      return responseData;
+    } catch (error) {
+      console.error(error);
+      throw new Error('Failed to create user');
+    }
   };
 
   // The parameters to be used for the login form
@@ -26,6 +39,7 @@ const Login = () => {
   return (
     <div className="login-container">
       <Form title='login' inputs={loginParams} actionSubmit={handleSubmit} />
+      <a href='#'>Sign Up</a>
     </div>
   );
 };
