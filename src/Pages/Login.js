@@ -10,9 +10,12 @@ const Login = () => {
     try {
       const response = await fetch(loginUser, {
         method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
         body: JSON.stringify(credentials)
       });
-      console.log(response);
+      console.log(await response.json());
   
       if (!response.ok) {
         const errorData = await response.json();
